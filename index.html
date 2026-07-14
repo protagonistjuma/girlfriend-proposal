@@ -3,30 +3,77 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Be My Valentine</title>
-    <link rel="stylesheet" href="css/valentine.css" />
+    <title>Later today?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div id="valentineQuestion"><b>Will you be my valentine?</b></div>
-    <button class="answerButton" onclick="location.href='thankyou.html'">
-      Yes
-    </button>
-    <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
-    <br />
-    <img src="cat.gif" alt="cat asking question" class="responsive" />
+    <main class="stage">
+      <p class="eyebrow">One question, Niza</p>
+      <h1>Will you come over <em>later today?</em></h1>
+      <p class="sub">
+        No agenda. I'll get the snacks, you pick everything else.
+      </p>
 
+      <div class="answers">
+        <button type="button" class="cta" id="yes">Yes</button>
+        <button type="button" class="ghost" id="no">No</button>
+      </div>
+
+      <img src="cat.gif" alt="A cat waiting for an answer" class="cat" />
+    </main>
+
+    <script src="js/plan.js"></script>
     <script>
-      document
-        .getElementById("noButton")
-        .addEventListener("click", function () {
-          var yesButton = document.querySelector(
-            'button[onclick*="thankyou.html"]'
-          );
-          var currentFontSize = parseInt(
-            window.getComputedStyle(yesButton).fontSize
-          );
-          yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 5px
-        });
+      clearPlan(); // fresh night, fresh plan
+
+      const yes = document.getElementById("yes");
+      const no = document.getElementById("no");
+
+      yes.addEventListener("click", () => (location.href = "when.html"));
+
+      /* The no button loses its nerve a little more each time it's pressed. */
+      const excuses = [
+        "No",
+        "Are you sure?",
+        "Think about it, Niza",
+        "I already bought the snacks",
+        "The cat wants you there",
+        "Okay but consider: cuddling",
+        "This button barely works now",
+        "no",
+      ];
+
+      let attempts = 0;
+      no.addEventListener("click", () => {
+        attempts++;
+
+        no.textContent = excuses[Math.min(attempts, excuses.length - 1)];
+        no.style.fontSize = `${Math.max(0.5, 0.95 - attempts * 0.06)}rem`;
+        no.style.opacity = `${Math.max(0.25, 1 - attempts * 0.1)}`;
+
+        const yesSize = 1.05 + attempts * 0.14;
+        yes.style.fontSize = `${yesSize}rem`;
+        yes.style.padding = `${14 + attempts * 2}px ${30 + attempts * 5}px`;
+
+        // it starts flinching away from the cursor
+        if (attempts >= 3) {
+          const dx = (Math.random() - 0.5) * 90;
+          const dy = (Math.random() - 0.5) * 50;
+          no.style.transform = `translate(${dx}px, ${dy}px)`;
+        }
+
+        // the room gets warmer the longer she pretends to say no
+        document.documentElement.style.setProperty(
+          "--glow",
+          `${0.12 + attempts * 0.04}`
+        );
+      });
     </script>
   </body>
 </html>

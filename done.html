@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>It's a plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* lights all the way up */
+      :root {
+        --glow: 0.55;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <p class="eyebrow">It's a plan</p>
+      <h1>See you in a few hours, <em>Niza.</em></h1>
+      <p class="sub">
+        Now send it to me so you can't get out of it.
+      </p>
+
+      <section class="receipt" id="receipt">
+        <h2>Niza &amp; me — today</h2>
+        <p class="meta" id="date"></p>
+        <hr />
+        <dl>
+          <div>
+            <dt>You arrive</dt>
+            <dd id="time"></dd>
+          </div>
+          <div>
+            <dt>We're doing</dt>
+            <dd id="doing"></dd>
+          </div>
+          <div>
+            <dt>I'm buying</dt>
+            <dd id="snacks"></dd>
+          </div>
+        </dl>
+        <hr />
+        <p class="total">
+          <span>Total</span>
+          <span>one (1) night</span>
+        </p>
+        <p class="meta fineprint">Non-refundable · No returns</p>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="cta" id="send">Send it to him</button>
+        <button type="button" class="ghost" id="image">
+          Send the receipt as a picture
+        </button>
+      </div>
+      <p class="hint" id="hint"></p>
+
+      <img src="rizz.gif" alt="" class="cat" />
+
+      <audio controls loop>
+        <source src="congratulations.mp3" type="audio/mpeg" />
+      </audio>
+
+      <button type="button" class="ghost" id="restart">Start over</button>
+    </main>
+
+    <script src="js/plan.js"></script>
+    <script src="js/receipt.js"></script>
+    <script>
+      const WHATSAPP = "260773530003";
+
+      const plan = loadPlan();
+
+      const today = new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      });
+
+      const list = (value, fallback) => {
+        const items = [].concat(value ?? []);
+        return items.length ? items.join(" · ") : fallback;
+      };
+
+      const fields = {
+        title: "Niza & me — today",
+        date: today,
+        rows: [
+          ["You arrive", plan.time ?? "whenever you show up"],
+          ["We're doing", list(plan.doing, "whatever you feel like")],
+          ["I'm buying", list(plan.snacks, "whatever's in the fridge")],
+        ],
+      };
+
+      document.getElementById("date").textContent = fields.date;
+      document.getElementById("time").textContent = fields.rows[0][1];
+      document.getElementById("doing").textContent = fields.rows[1][1];
+      document.getElementById("snacks").textContent = fields.rows[2][1];
+
+      const message = [
+        `It's a plan — ${today}`,
+        ``,
+        `I arrive: ${fields.rows[0][1]}`,
+        `We're doing: ${fields.rows[1][1]}`,
+        `You're buying: ${fields.rows[2][1]}`,
+        ``,
+        `Total: one (1) night. Non-refundable.`,
+        `— Niza`,
+      ].join("\n");
+
+      const hint = document.getElementById("hint");
+
+      document.getElementById("send").addEventListener("click", () => {
+        window.open(
+          `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`,
+          "_blank",
+          "noopener"
+        );
+      });
+
+      /* WhatsApp links can't carry a file, so the picture goes through the
+         phone's share sheet. Desktop has no share sheet — download instead. */
+      document.getElementById("image").addEventListener("click", async () => {
+        hint.textContent = "Drawing the receipt…";
+
+        const canvas = await renderReceipt(fields);
+        const blob = await canvasToBlob(canvas);
+        const file = new File([blob], "tonight.png", { type: "image/png" });
+
+        if (navigator.canShare?.({ files: [file] })) {
+          try {
+            await navigator.share({ files: [file], text: message });
+            hint.textContent = "";
+          } catch {
+            hint.textContent = ""; // she backed out of the share sheet
+          }
+          return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "tonight.png";
+        a.click();
+        URL.revokeObjectURL(url);
+        hint.textContent = "Saved as tonight.png — send it to him on WhatsApp.";
+      });
+
+      document.getElementById("restart").addEventListener("click", () => {
+        clearPlan();
+        location.href = "index.html";
+      });
+    </script>
+  </body>
+</html>

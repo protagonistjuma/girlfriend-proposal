@@ -1,0 +1,401 @@
+/* ── tokens ─────────────────────────────────────────────── */
+:root {
+  --ink: #120e1c;
+  --dusk: #1d1730;
+  --dusk-hi: #2a2145;
+  --lamp: #ffb35c;
+  --blush: #ff6e8a;
+  --cream: #f3eae1;
+  --muted: #9a8fb0;
+
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --body: "DM Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* how lit the room is — each page turns it up */
+  --glow: 0.12;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* the porch light. gets brighter as she says yes to more things. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh -20vw;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 50% at 50% 0%,
+    rgba(255, 179, 92, var(--glow)),
+    transparent 70%
+  );
+  transition: opacity 1.2s ease;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(32px, 8vh, 80px) 24px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 28px;
+}
+
+/* ── type ───────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 em {
+  font-style: normal;
+  color: var(--lamp);
+}
+
+.sub {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+/* ── buttons ────────────────────────────────────────────── */
+.cta {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  padding: 14px 30px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--lamp);
+  box-shadow: 0 0 0 0 rgba(255, 179, 92, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, opacity 0.2s ease;
+}
+
+.cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px -6px rgba(255, 179, 92, 0.6);
+}
+
+.cta:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: var(--dusk-hi);
+  color: var(--muted);
+}
+
+.ghost {
+  font-family: var(--body);
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--dusk-hi);
+  transition: transform 0.25s ease, font-size 0.25s ease, opacity 0.25s ease;
+}
+
+.ghost:hover {
+  color: var(--cream);
+  border-color: var(--muted);
+}
+
+.answers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  min-height: 80px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blush);
+  outline-offset: 3px;
+}
+
+/* ── selectable cards & chips ───────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.pick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px;
+  text-align: left;
+  border-radius: 16px;
+  cursor: pointer;
+  color: var(--cream);
+  background: var(--dusk);
+  border: 1px solid var(--dusk-hi);
+  transition: background 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pick:hover {
+  transform: translateY(-3px);
+  border-color: var(--muted);
+}
+
+.pick .icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.pick .name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.pick .note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* the real input lives under the card */
+.pick input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.pick:has(input:checked) {
+  background: linear-gradient(160deg, var(--dusk-hi), var(--dusk));
+  border-color: var(--lamp);
+}
+
+.pick:has(input:checked)::after {
+  content: "✓";
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--lamp);
+}
+
+.pick:has(input:focus-visible) {
+  outline: 2px solid var(--blush);
+  outline-offset: 3px;
+}
+
+/* time chips read like a clock, so they're mono */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.chip {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  padding: 12px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--cream);
+  background: var(--dusk);
+  border: 1px solid var(--dusk-hi);
+  transition: background 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, color 0.2s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--muted);
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.chip:has(input:checked) {
+  background: var(--lamp);
+  border-color: var(--lamp);
+  color: var(--ink);
+}
+
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--blush);
+  outline-offset: 3px;
+}
+
+/* ── the receipt ────────────────────────────────────────── */
+.receipt {
+  width: 100%;
+  max-width: 420px;
+  text-align: left;
+  padding: 28px;
+  border-radius: 4px;
+  color: var(--ink);
+  background: var(--cream);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+}
+
+.receipt h2 {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.receipt .meta {
+  color: #7a6f83;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.receipt hr {
+  border: none;
+  border-top: 1px dashed #c9bcae;
+  margin: 18px 0;
+}
+
+.receipt dl {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.receipt dt {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a6f83;
+}
+
+.receipt dd {
+  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.receipt .fineprint {
+  margin: 12px 0 0;
+}
+
+.receipt .total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hint {
+  margin: -14px 0 0;
+  min-height: 1.4em;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.cat {
+  width: min(300px, 70vw);
+  height: auto;
+  border-radius: 20px;
+}
+
+audio {
+  width: min(320px, 80vw);
+}
+
+/* ── motion ─────────────────────────────────────────────── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stage > * {
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.stage > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.stage > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.stage > *:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.stage > *:nth-child(5) {
+  animation-delay: 0.32s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

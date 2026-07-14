@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>When?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      :root {
+        --glow: 0.2;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <p class="eyebrow">Step 1 — the time</p>
+      <h1>Knock at <em>what time?</em></h1>
+      <p class="sub">Pick one, Niza. I'll be counting down to it, obviously.</p>
+
+      <div class="chips">
+        <label class="chip"
+          ><input type="radio" name="time" value="15:00 — the whole afternoon, then" />
+          15:00</label
+        >
+        <label class="chip"
+          ><input type="radio" name="time" value="16:00 — early, so it lasts longer" />
+          16:00</label
+        >
+        <label class="chip"
+          ><input type="radio" name="time" value="17:00 — golden hour" />
+          17:00</label
+        >
+        <label class="chip"
+          ><input type="radio" name="time" value="19:00 — dinner hour" />
+          19:00</label
+        >
+        <label class="chip"
+          ><input
+            type="radio"
+            name="time"
+            value="whenever — door's unlocked, just come"
+          />
+          whenever</label
+        >
+      </div>
+
+      <button type="button" class="cta" id="next" disabled>
+        That's the one
+      </button>
+    </main>
+
+    <script src="js/plan.js"></script>
+    <script>
+      wireStep({
+        inputName: "time",
+        button: document.getElementById("next"),
+        key: "time",
+        next: "doing.html",
+        single: true,
+      });
+    </script>
+  </body>
+</html>

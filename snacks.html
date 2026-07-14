@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snacks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      :root {
+        --glow: 0.4;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <p class="eyebrow">Step 3 — the shopping list</p>
+      <h1>What should I <em>stock up on?</em></h1>
+      <p class="sub">
+        I'm going to the shop either way, Niza. Tell me what to come back with.
+      </p>
+
+      <div class="grid">
+        <label class="pick">
+          <input type="checkbox" name="snacks" value="Ice cream" />
+          <span class="icon">🍦</span>
+          <span class="name">Ice cream</span>
+          <span class="note">Name your flavour, it's yours</span>
+        </label>
+
+        <label class="pick">
+          <input type="checkbox" name="snacks" value="Chocolate" />
+          <span class="icon">🍫</span>
+          <span class="name">Chocolate</span>
+          <span class="note">The good stuff, not the value bar</span>
+        </label>
+
+        <label class="pick">
+          <input type="checkbox" name="snacks" value="Mini Cheddars" />
+          <span class="icon">🧀</span>
+          <span class="name">Mini Cheddars</span>
+          <span class="note">Correct answer, for the record</span>
+        </label>
+
+        <label class="pick">
+          <input type="checkbox" name="snacks" value="Donuts" />
+          <span class="icon">🍩</span>
+          <span class="name">Donuts</span>
+          <span class="note">Box of them. Obviously.</span>
+        </label>
+      </div>
+
+      <button type="button" class="cta" id="next" disabled>
+        Adding to the list
+      </button>
+    </main>
+
+    <script src="js/plan.js"></script>
+    <script>
+      wireStep({
+        inputName: "snacks",
+        button: document.getElementById("next"),
+        key: "snacks",
+        next: "done.html",
+      });
+    </script>
+  </body>
+</html>
