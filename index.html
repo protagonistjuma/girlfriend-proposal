@@ -7,9 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" />
+    </noscript>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -25,7 +30,15 @@
         <button type="button" class="ghost" id="no">No</button>
       </div>
 
-      <img src="cat.gif" alt="A cat waiting for an answer" class="cat" />
+      <video
+        class="cat"
+        src="cat.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-label="A cat waiting for an answer"
+      ></video>
     </main>
 
     <script src="js/plan.js"></script>
