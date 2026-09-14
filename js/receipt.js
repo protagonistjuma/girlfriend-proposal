@@ -1,13 +1,10 @@
-/* Draws the receipt to a canvas so it can be shared as a real image.
-   Hand-drawn rather than pulled from a library - the page has to stay
-   self-contained on GitHub Pages. */
+const CREAM = "#fffdf9";
+const INK = "#351624";
+const FADED = "#7d5e69";
+const RULE = "#dfc9c5";
+const RED = "#c9284f";
 
-const CREAM = "#f3eae1";
-const INK = "#120e1c";
-const FADED = "#7a6f83";
-const RULE = "#c9bcae";
-
-const W = 660; // logical width; scaled up for retina at draw time
+const W = 660;
 const PAD = 48;
 
 function wrap(ctx, text, maxWidth) {
@@ -27,8 +24,6 @@ function wrap(ctx, text, maxWidth) {
   return lines;
 }
 
-/* Both passes walk the same instructions: the first only advances y so we
-   know how tall the canvas must be, the second actually paints. */
 function layout(ctx, fields, paint) {
   const inner = W - PAD * 2;
   let y = PAD + 34;
@@ -58,6 +53,14 @@ function layout(ctx, fields, paint) {
     ctx.letterSpacing = "0px";
   };
 
+  text(
+    "GIRLFRIEND ACCEPTANCE RECEIPT",
+    '700 12px "DM Sans", sans-serif',
+    RED,
+    20,
+    "1.7px"
+  );
+  y += 4;
   text(fields.title, '700 34px "Bricolage Grotesque", sans-serif', INK, 40);
   y += 4;
   text(
@@ -90,14 +93,13 @@ function layout(ctx, fields, paint) {
   ctx.fillStyle = INK;
   if (paint) {
     ctx.fillText("Total", PAD, y);
-    const total = "one (1) night";
+    const total = "one lucky boyfriend";
     ctx.fillText(total, W - PAD - ctx.measureText(total).width, y);
   }
   y += 30;
 
-  // escaped so the file survives being served without a charset header
   text(
-    "NON-REFUNDABLE \u00b7 NO RETURNS",
+    "NO REFUNDS \u00b7 UNLIMITED CUDDLES \u00b7 OFFICIALLY OFFICIAL",
     '500 12px "JetBrains Mono", monospace',
     FADED,
     18,
@@ -108,7 +110,6 @@ function layout(ctx, fields, paint) {
 }
 
 async function renderReceipt(fields) {
-  // without this the canvas paints in a fallback face on first load
   if (document.fonts) await document.fonts.ready;
 
   const measure = document.createElement("canvas").getContext("2d");

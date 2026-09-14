@@ -3,60 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>When?</title>
+    <meta name="theme-color" content="#fff8f2" />
+    <title>When are we celebrating?</title>
     <link rel="stylesheet" href="css/style.css" />
-    <style>
-      :root {
-        --glow: 0.2;
-      }
-    </style>
   </head>
   <body>
-    <main class="stage">
-      <p class="eyebrow">Step 1 — the time</p>
-      <h1>Knock at <em>what time?</em></h1>
-      <p class="sub">Pick one, Niza. I'll be counting down to it, obviously.</p>
-
-      <div class="chips">
-        <label class="chip"
-          ><input type="radio" name="time" value="15:00 — the whole afternoon, then" />
-          15:00</label
-        >
-        <label class="chip"
-          ><input type="radio" name="time" value="16:00 — early, so it lasts longer" />
-          16:00</label
-        >
-        <label class="chip"
-          ><input type="radio" name="time" value="17:00 — golden hour" />
-          17:00</label
-        >
-        <label class="chip"
-          ><input type="radio" name="time" value="19:00 — dinner hour" />
-          19:00</label
-        >
-        <label class="chip"
-          ><input
-            type="radio"
-            name="time"
-            value="whenever — door's unlocked, just come"
-          />
-          whenever</label
-        >
+    <main class="flow-shell compact-shell">
+      <nav class="progress" aria-label="Proposal progress">
+        <span class="done">Yes!</span><span class="done">Food</span><span class="active">When</span><span>T&amp;Cs</span><span>Us</span>
+      </nav>
+      <header class="flow-header">
+        <p class="kicker">Save the date</p>
+        <h1>When are you coming over to celebrate?</h1>
+        <p>I’ll be ready suspiciously early. You just pick the date and time.</p>
+      </header>
+      <section class="date-card" aria-label="Choose a date and time">
+        <div class="field"><label for="date">Our date</label><input type="date" id="date" name="date" required /></div>
+        <div class="field"><label for="time">Your grand arrival</label><input type="time" id="time" name="time" required /></div>
+        <p class="date-aside">I’ll provide the food. You provide your very cute face.</p>
+      </section>
+      <div class="flow-actions">
+        <button type="button" class="cta" id="next" disabled>Review the fine print</button>
+        <p class="selection-hint" id="when-hint">Both fields are legally romantic.</p>
       </div>
-
-      <button type="button" class="cta" id="next" disabled>
-        That's the one
-      </button>
     </main>
-
     <script src="js/plan.js"></script>
     <script>
-      wireStep({
-        inputName: "time",
-        button: document.getElementById("next"),
-        key: "time",
-        next: "doing",
-        single: true,
+      const date = document.getElementById("date");
+      const time = document.getElementById("time");
+      const next = document.getElementById("next");
+      const hint = document.getElementById("when-hint");
+      const today = new Date();
+      const localToday = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().split("T")[0];
+      date.min = localToday;
+      date.value = localToday;
+      function sync() {
+        next.disabled = !(date.value && time.value);
+        hint.textContent = next.disabled ? "Choose a time and we have ourselves a date." : "Perfect. I’m already counting down.";
+      }
+      date.addEventListener("change", sync);
+      time.addEventListener("input", sync);
+      sync();
+      next.addEventListener("click", () => {
+        if (next.disabled) return;
+        savePlan({ date: date.value, time: time.value });
+        location.href = "terms.html";
       });
     </script>
   </body>

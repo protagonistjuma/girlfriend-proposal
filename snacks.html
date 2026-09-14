@@ -3,64 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snacks</title>
+    <meta name="theme-color" content="#fff8f2" />
+    <title>Yayyyyy — celebration food</title>
     <link rel="stylesheet" href="css/style.css" />
-    <style>
-      :root {
-        --glow: 0.4;
-      }
-    </style>
   </head>
   <body>
-    <main class="stage">
-      <p class="eyebrow">Step 3 — the shopping list</p>
-      <h1>What should I <em>stock up on?</em></h1>
-      <p class="sub">
-        I'm going to the shop either way, Niza. Tell me what to come back with.
-      </p>
+    <main class="flow-shell">
+      <nav class="progress" aria-label="Proposal progress">
+        <span class="done">Yes!</span><span class="active">Food</span><span>When</span><span>T&amp;Cs</span><span>Us</span>
+      </nav>
+      <header class="flow-header">
+        <p class="kicker">Excellent answer, Trinah</p>
+        <h1>Yayyyyy, let’s celebrate with food!</h1>
+        <p>Choose the winner. Girlfriend privileges start now.</p>
+      </header>
 
-      <div class="grid">
-        <label class="pick">
-          <input type="checkbox" name="snacks" value="Ice cream" />
-          <span class="icon">🍦</span>
-          <span class="name">Ice cream</span>
-          <span class="note">Name your flavour, it's yours</span>
-        </label>
+      <section class="choice-grid" aria-label="Celebration food options">
+        <label class="food-card"><input type="radio" name="food" value="Pizza" /><span class="food-emoji">🍕</span><span class="food-name">Pizza</span><span class="food-note">One slice for me, the rest mysteriously yours</span></label>
+        <label class="food-card"><input type="radio" name="food" value="Chicken & chips" /><span class="food-emoji">🍗</span><span class="food-name">Chicken &amp; chips</span><span class="food-note">Reliable, elite, no notes</span></label>
+        <label class="food-card"><input type="radio" name="food" value="Shawarmas" /><span class="food-emoji">🌯</span><span class="food-name">Shawarmas</span><span class="food-note">Wrapped, loaded, and celebration-ready</span></label>
+        <label class="food-card"><input type="radio" name="food" value="Dessert mixture" /><span class="food-emoji">🍰</span><span class="food-name">Dessert mixture</span><span class="food-note">A little bit of every sweet thing</span></label>
+      </section>
 
-        <label class="pick">
-          <input type="checkbox" name="snacks" value="Chocolate" />
-          <span class="icon">🍫</span>
-          <span class="name">Chocolate</span>
-          <span class="note">The good stuff, not the value bar</span>
-        </label>
-
-        <label class="pick">
-          <input type="checkbox" name="snacks" value="Mini Cheddars" />
-          <span class="icon">🧀</span>
-          <span class="name">Mini Cheddars</span>
-          <span class="note">Correct answer, for the record</span>
-        </label>
-
-        <label class="pick">
-          <input type="checkbox" name="snacks" value="Donuts" />
-          <span class="icon">🍩</span>
-          <span class="name">Donuts</span>
-          <span class="note">Box of them. Obviously.</span>
-        </label>
+      <div class="flow-actions">
+        <button type="button" class="cta" id="next" disabled>Plan our celebration</button>
+        <p class="selection-hint" id="selection-hint">Pick one delicious thing.</p>
       </div>
-
-      <button type="button" class="cta" id="next" disabled>
-        Adding to the list
-      </button>
     </main>
-
     <script src="js/plan.js"></script>
     <script>
-      wireStep({
-        inputName: "snacks",
-        button: document.getElementById("next"),
-        key: "snacks",
-        next: "done",
+      const inputs = [...document.querySelectorAll('input[name="food"]')];
+      const next = document.getElementById("next");
+      const hint = document.getElementById("selection-hint");
+      function sync() {
+        const selected = inputs.find((input) => input.checked);
+        next.disabled = !selected;
+        hint.textContent = selected ? `${selected.value} it is. Excellent taste.` : "Pick one delicious thing.";
+      }
+      inputs.forEach((input) => input.addEventListener("change", sync));
+      next.addEventListener("click", () => {
+        const food = inputs.find((input) => input.checked)?.value;
+        if (!food) return;
+        savePlan({ food });
+        location.href = "when.html";
       });
     </script>
   </body>

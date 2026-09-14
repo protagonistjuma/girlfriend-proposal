@@ -3,72 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>It's a plan</title>
+    <meta name="theme-color" content="#7d1735" />
+    <title>It’s official 💖</title>
     <link rel="stylesheet" href="css/style.css" />
-    <style>
-      /* lights all the way up */
-      :root {
-        --glow: 0.55;
-      }
-    </style>
   </head>
-  <body>
-    <main class="stage">
-      <p class="eyebrow">It's a plan</p>
-      <h1>See you in a few hours, <em>Niza.</em></h1>
-      <p class="sub">
-        Now send it to me so you can't get out of it.
-      </p>
+  <body class="final-page">
+    <main class="flow-shell final-shell">
+      <nav class="progress light-progress" aria-label="Proposal progress">
+        <span class="done">Yes!</span><span class="done">Food</span><span class="done">When</span><span class="done">T&amp;Cs</span><span class="active">Us</span>
+      </nav>
 
-      <section class="receipt" id="receipt">
-        <h2>Niza &amp; me — today</h2>
-        <p class="meta" id="date"></p>
-        <hr />
+      <header class="final-header">
+        <p class="kicker">Breaking news</p>
+        <h1>Trinah said yes!</h1>
+        <p>Best decision ever. No pressure, but this is now my favourite day.</p>
+      </header>
+
+      <section class="receipt" id="receipt" aria-label="Our celebration plan">
+        <div class="receipt-stamp" aria-hidden="true">OFFICIAL</div>
+        <p class="receipt-label">Girlfriend acceptance receipt</p>
+        <h2>Trinah &amp; Juma</h2>
+        <p class="receipt-date" id="date"></p>
+        <div class="receipt-rule"></div>
         <dl>
-          <div>
-            <dt>You arrive</dt>
-            <dd id="time"></dd>
-          </div>
-          <div>
-            <dt>We're doing</dt>
-            <dd id="doing"></dd>
-          </div>
-          <div>
-            <dt>I'm buying</dt>
-            <dd id="snacks"></dd>
-          </div>
+          <div><dt>Celebration date</dt><dd id="celebration-date"></dd></div>
+          <div><dt>Grand arrival</dt><dd id="time"></dd></div>
+          <div><dt>Food order</dt><dd id="food"></dd></div>
+          <div><dt>Relationship status</dt><dd>Very much official 💖</dd></div>
         </dl>
-        <hr />
-        <p class="total">
-          <span>Total</span>
-          <span>one (1) night</span>
-        </p>
-        <p class="meta fineprint">Non-refundable · No returns</p>
+        <div class="receipt-rule"></div>
+        <p class="receipt-total"><span>Total</span><strong>One very lucky boyfriend</strong></p>
+        <p class="receipt-fineprint">NO REFUNDS · UNLIMITED CUDDLES · TERMS ACCEPTED UNDER EXTREME CUTENESS</p>
       </section>
 
-      <div class="actions">
-        <button type="button" class="cta" id="send">Send it to him</button>
-        <button type="button" class="ghost" id="image">
-          Send the receipt as a picture
-        </button>
+      <div class="final-actions">
+        <button type="button" class="cta light-cta" id="send">Send me the good news</button>
+        <button type="button" class="ghost light-ghost" id="image">Share the receipt as a picture</button>
       </div>
-      <p class="hint" id="hint"></p>
+      <p class="share-hint" id="hint" aria-live="polite"></p>
 
-      <video
-        class="cat"
-        src="rizz.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-      ></video>
-
-      <audio controls loop>
-        <source src="congratulations.mp3" type="audio/mpeg" />
-      </audio>
-
-      <button type="button" class="ghost" id="restart">Start over</button>
+      <div class="celebration-media">
+        <video src="rizz.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <p>Me, acting completely calm about this.</p>
+      </div>
+      <audio controls loop><source src="congratulations.mp3" type="audio/mpeg" /></audio>
+      <button type="button" class="text-button" id="restart">Replay the proposal</button>
     </main>
 
     <script src="js/plan.js"></script>
@@ -76,87 +55,68 @@
     <script src="js/video.js"></script>
     <script>
       const WHATSAPP = "260773530003";
-
       const plan = loadPlan();
-
-      const today = new Date().toLocaleDateString(undefined, {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-      });
-
-      const list = (value, fallback) => {
-        const items = [].concat(value ?? []);
-        return items.length ? items.join(" · ") : fallback;
+      const longDate = (value) => {
+        if (!value) return "Date to be confirmed";
+        return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
       };
-
+      const food = [].concat(plan.food || []).join(" · ") || "A delicious surprise";
+      const chosenDate = longDate(plan.date);
       const fields = {
-        title: "Niza & me — today",
-        date: today,
+        title: "Trinah & Juma — official",
+        date: new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }),
         rows: [
-          ["You arrive", plan.time ?? "whenever you show up"],
-          ["We're doing", list(plan.doing, "whatever you feel like")],
-          ["I'm buying", list(plan.snacks, "whatever's in the fridge")],
+          ["Celebration date", chosenDate],
+          ["Grand arrival", plan.time || "Whenever Trinah appears"],
+          ["Food order", food],
+          ["Relationship status", "Very much official"],
         ],
       };
 
-      document.getElementById("date").textContent = fields.date;
-      document.getElementById("time").textContent = fields.rows[0][1];
-      document.getElementById("doing").textContent = fields.rows[1][1];
-      document.getElementById("snacks").textContent = fields.rows[2][1];
+      document.getElementById("date").textContent = `Issued ${fields.date}`;
+      document.getElementById("celebration-date").textContent = chosenDate;
+      document.getElementById("time").textContent = plan.time || "Whenever Trinah appears";
+      document.getElementById("food").textContent = food;
 
       const message = [
-        `It's a plan — ${today}`,
-        ``,
-        `I arrive: ${fields.rows[0][1]}`,
-        `We're doing: ${fields.rows[1][1]}`,
-        `You're buying: ${fields.rows[2][1]}`,
-        ``,
-        `Total: one (1) night. Non-refundable.`,
-        `— Niza`,
+        "SHE SAID YESSSS! 💖",
+        "",
+        `Trinah is officially my girlfriend.`,
+        `We’re celebrating: ${chosenDate} at ${plan.time || "a time to be confirmed"}`,
+        `Food: ${food}`,
+        "",
+        "The extremely serious T&Cs have been accepted 😌",
       ].join("\n");
-
       const hint = document.getElementById("hint");
 
       document.getElementById("send").addEventListener("click", () => {
-        window.open(
-          `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`,
-          "_blank",
-          "noopener"
-        );
+        window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
       });
-
-      /* WhatsApp links can't carry a file, so the picture goes through the
-         phone's share sheet. Desktop has no share sheet — download instead. */
       document.getElementById("image").addEventListener("click", async () => {
-        hint.textContent = "Drawing the receipt…";
-
+        hint.textContent = "Making your official receipt…";
         const canvas = await renderReceipt(fields);
         const blob = await canvasToBlob(canvas);
-        const file = new File([blob], "tonight.png", { type: "image/png" });
-
+        const file = new File([blob], "trinah-said-yes.png", { type: "image/png" });
         if (navigator.canShare?.({ files: [file] })) {
           try {
             await navigator.share({ files: [file], text: message });
             hint.textContent = "";
           } catch {
-            hint.textContent = ""; // she backed out of the share sheet
+            hint.textContent = "";
           }
           return;
         }
-
         const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "tonight.png";
-        a.click();
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = file.name;
+        link.click();
         URL.revokeObjectURL(url);
-        hint.textContent = "Saved as tonight.png — send it to him on WhatsApp.";
+        hint.textContent = "Saved! Send me the proof before I start dreaming.";
       });
-
       document.getElementById("restart").addEventListener("click", () => {
         clearPlan();
-        location.href = "/";
+        location.href = "index.html";
       });
     </script>
   </body>

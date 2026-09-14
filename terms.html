@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff8f2" />
+    <title>The extremely serious T&amp;Cs</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="flow-shell terms-shell">
+      <nav class="progress" aria-label="Proposal progress">
+        <span class="done">Yes!</span><span class="done">Food</span><span class="done">When</span><span class="active">T&amp;Cs</span><span>Us</span>
+      </nav>
+      <header class="flow-header">
+        <p class="kicker">The extremely serious bit</p>
+        <h1>Girlfriend terms &amp; conditions</h1>
+        <p>Please review this absolutely binding, definitely real legal document.</p>
+      </header>
+      <section class="contract" aria-labelledby="contract-title">
+        <div class="contract-topline"><h2 id="contract-title">The Trinah agreement</h2><span>Effective immediately-ish</span></div>
+        <ol class="rules-list">
+          <li><span>No looking at other guys.</span><small>Unless they’re in a movie. I’m reasonable.</small></li>
+          <li><span>No breathing the same air as other guys.</span><small>Shared atmosphere exemption applies in public places.</small></li>
+          <li><span>All hoodies borrowed by Trinah become Trinah’s property.</span><small>This is somehow my loss and also my privilege.</small></li>
+          <li><span>“I’m not hungry” does not cancel your right to my fries.</span><small>A minimum fry tax of 27% is expected.</small></li>
+          <li><span>Random compliments may arrive without warning.</span><small>There is no opt-out button.</small></li>
+          <li><span>Arguments must end with a hug and snacks.</span><small>Snack selection remains at Trinah’s sole discretion.</small></li>
+          <li><span>Cute photos of us are mandatory.</span><small>At least 14 attempts before choosing one.</small></li>
+          <li><span>You must tell me when something is wrong.</span><small>I promise to listen properly, not just say “damn, that’s crazy.”</small></li>
+          <li><span>You are required to be adored, loudly and consistently.</span><small>No loopholes. Sorry.</small></li>
+        </ol>
+        <p class="legal-ish">Disclaimer: these rules are 99% jokes, 1% me asking for your hoodies too. Trinah may amend, ignore, or roast any clause at any time.</p>
+      </section>
+      <label class="accept-row"><input type="checkbox" id="accept" /><span>I accept this extremely serious nonsense.</span></label>
+      <div class="flow-actions"><button type="button" class="cta" id="next" disabled>Make it official 💘</button></div>
+    </main>
+    <script src="js/plan.js"></script>
+    <script>
+      const accept = document.getElementById("accept");
+      const next = document.getElementById("next");
+      accept.addEventListener("change", () => (next.disabled = !accept.checked));
+      next.addEventListener("click", () => {
+        if (!accept.checked) return;
+        savePlan({ termsAccepted: true });
+        location.href = "done.html";
+      });
+    </script>
+  </body>
+</html>

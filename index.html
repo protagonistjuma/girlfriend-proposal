@@ -3,80 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Later today?</title>
+    <meta name="theme-color" content="#fff8f2" />
+    <title>Trinah, one tiny question…</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <main class="stage">
-      <p class="eyebrow">One question, Niza</p>
-      <h1>Will you come over <em>later today?</em></h1>
-      <p class="sub">
-        No agenda. I'll get the snacks, you pick everything else.
-      </p>
+  <body class="proposal-page">
+    <main class="proposal-shell">
+      <section class="love-note" aria-labelledby="proposal-title">
+        <span class="tape" aria-hidden="true"></span>
+        <p class="kicker">A very important question for Trinah</p>
+        <h1 id="proposal-title">Will you be my girlfriend?</h1>
+        <p class="proposal-copy">
+          I like you a completely normal amount. By “normal,” I mean I made you
+          a whole website to ask one question.
+        </p>
 
-      <div class="answers">
-        <button type="button" class="cta" id="yes">Yes</button>
-        <button type="button" class="ghost" id="no">No</button>
-      </div>
+        <div class="answers" id="answers">
+          <button type="button" class="cta cta-big" id="yes">
+            Yes, obviously 💌
+          </button>
+          <button type="button" class="ghost no-button" id="no">No</button>
+        </div>
+        <p class="tiny-note" id="no-note" aria-live="polite">
+          Choose carefully. One option has snacks.
+        </p>
+      </section>
 
-      <video
-        class="cat"
-        src="cat.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        aria-label="A cat waiting for an answer"
-      ></video>
+      <aside class="photo-card" aria-label="A very persuasive cat">
+        <video class="proposal-video" src="cat.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <p>Live footage of me waiting for your answer.</p>
+      </aside>
+
+      <span class="doodle doodle-heart" aria-hidden="true">♥</span>
+      <span class="doodle doodle-arrow" aria-hidden="true">↝</span>
     </main>
 
     <script src="js/plan.js"></script>
     <script src="js/video.js"></script>
     <script>
-      clearPlan(); // fresh night, fresh plan
-
+      clearPlan();
       const yes = document.getElementById("yes");
       const no = document.getElementById("no");
-
-      yes.addEventListener("click", () => (location.href = "when"));
-
-      /* The no button loses its nerve a little more each time it's pressed. */
-      const excuses = [
-        "No",
-        "Are you sure?",
-        "Think about it, Niza",
-        "I already bought the snacks",
-        "The cat wants you there",
-        "Okay but consider: cuddling",
-        "This button barely works now",
-        "no",
-      ];
+      const note = document.getElementById("no-note");
+      const replies = ["No", "Trinah… be serious 😭", "That button seems suspicious", "Are you sure sure?", "I can add dessert", "The yes button is right there", "Okay, last chance 👀", "Nope, this button has resigned"];
+      const notes = ["Choose carefully. One option has snacks.", "A bold opening move.", "I respect the drama. I reject the answer.", "Even the cat thinks that was a misclick.", "Counter-offer: food, cuddles, and me.", "This negotiation is going extremely well for me.", "The board has reviewed your answer.", "Motion denied. Please select yes."];
 
       let attempts = 0;
+      yes.addEventListener("click", () => {
+        savePlan({ acceptedAt: new Date().toISOString() });
+        document.body.classList.add("said-yes");
+        yes.textContent = "Yayyyyy! 💖";
+        setTimeout(() => (location.href = "snacks.html"), 650);
+      });
+
       no.addEventListener("click", () => {
-        attempts++;
-
-        no.textContent = excuses[Math.min(attempts, excuses.length - 1)];
-        no.style.fontSize = `${Math.max(0.5, 0.95 - attempts * 0.06)}rem`;
-        no.style.opacity = `${Math.max(0.25, 1 - attempts * 0.1)}`;
-
-        const yesSize = 1.05 + attempts * 0.14;
-        yes.style.fontSize = `${yesSize}rem`;
-        yes.style.padding = `${14 + attempts * 2}px ${30 + attempts * 5}px`;
-
-        // it starts flinching away from the cursor
+        attempts += 1;
+        const index = Math.min(attempts, replies.length - 1);
+        no.textContent = replies[index];
+        note.textContent = notes[index];
+        yes.style.setProperty("--yes-scale", Math.min(1.34, 1 + attempts * 0.055));
         if (attempts >= 3) {
-          const dx = (Math.random() - 0.5) * 90;
-          const dy = (Math.random() - 0.5) * 50;
-          no.style.transform = `translate(${dx}px, ${dy}px)`;
+          const maxX = Math.min(90, window.innerWidth * 0.14);
+          no.style.transform = `translate(${(Math.random() - 0.5) * maxX}px, ${(Math.random() - 0.5) * 36}px)`;
         }
-
-        // the room gets warmer the longer she pretends to say no
-        document.documentElement.style.setProperty(
-          "--glow",
-          `${0.12 + attempts * 0.04}`
-        );
       });
     </script>
   </body>

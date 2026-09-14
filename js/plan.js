@@ -1,6 +1,3 @@
-/* Shared state for the night. Everything she picks is kept here so the
-   last page can read it back to her. */
-
 const KEY = "tonight";
 
 function loadPlan() {
@@ -21,8 +18,6 @@ function clearPlan() {
   localStorage.removeItem(KEY);
 }
 
-/* Wires a group of inputs to a continue button: nothing picked, nowhere to go.
-   Returns nothing — it owns the button's disabled state from here on. */
 function wireStep({ inputName, button, key, next, single = false }) {
   const inputs = [...document.querySelectorAll(`input[name="${inputName}"]`)];
   const picked = () =>
